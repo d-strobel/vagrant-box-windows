@@ -1,0 +1,25 @@
+# .terraform-docs.yml
+content: |-
+  # Windows Server Vagrant boxes
+
+  Build and deploy Windows Vagrant boxes with Hashicorp Packer.
+
+  ## Version
+  | Windows Server version | Stage |
+  | ---------------------- | ----- |
+  | Windows Server 2022 Standard Core | 2022-sc |
+
+  ## Usage (example)
+
+  ```bash
+  make packer-init
+  make packer-validate VERSION=2022-sc
+  make packer-build VERSION=2022-sc
+  ```
+
+  {{ .Inputs }}
+
+  ## Inspirations
+    - https://github.com/ruzickap/packer-templates
+    - https://github.com/eaksel/packer-Win2019
+    - https://github.com/gusztavvargadr/
