@@ -8,7 +8,7 @@ SHELL = bash
 
 # Ensure prerequesites
 packer-validate packer-build: \
-	version/$(VERSION).pkvars.hcl
+	version/$(VERSION).pkrvars.hcl
 
 # Check if var-file exists
 version/%.pkrvars.hcl:
@@ -16,7 +16,7 @@ version/%.pkrvars.hcl:
 
 .PHONY: packer-validate
 packer-validate:
-	$(PACKER) validate -var-file=version/$(VERSION).pkvars.hcl .
+	$(PACKER) validate -var-file=version/$(VERSION).pkrvars.hcl .
 
 .PHONY: packer-fmt
 packer-fmt:
@@ -29,3 +29,7 @@ packer-init:
 .PHONY: packer-build
 packer-build:
 	$(PACKER) build -var-file=version/$(VERSION).pkrvars.hcl .
+
+.PHONY: docs
+docs:
+	terraform-docs markdown . > README.md
