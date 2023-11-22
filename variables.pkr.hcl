@@ -11,7 +11,7 @@ variable "iso_url" {
   type        = string
 }
 variable "iso_checksum" {
-  description = "Define the checksom for the windows iso in the format 'type:checksum'"
+  description = "Define the checksum for the windows iso in the format 'type:checksum'."
   type        = string
 }
 variable "guest_os_type" {
@@ -19,6 +19,6 @@ variable "guest_os_type" {
   type        = string
 }
 variable "version" {
-  description = "Define the build version. E.g '2022-sc'"
+  description = "Define the build version. E.g '2022-sc'."
   type        = string
 }

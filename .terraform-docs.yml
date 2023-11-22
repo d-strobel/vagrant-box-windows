@@ -5,7 +5,7 @@ content: |-
   Build and deploy Windows Vagrant boxes with Hashicorp Packer.
 
   ## Version
-  | Windows Server version | Stage |
+  | Windows Server         | Version |
   | ---------------------- | ----- |
   | Windows Server 2022 Standard Core | 2022-sc |
 
