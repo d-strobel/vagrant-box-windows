@@ -1,8 +1,16 @@
+/*
+  Windows Packer => Vagrant build
+*/
+
 packer {
   required_plugins {
     vagrant = {
-      version = "~> 1"
+      version = "1.1.0"
       source  = "github.com/hashicorp/vagrant"
+    }
+    windows-update = {
+      version = "0.14.0"
+      source  = "github.com/rgl/windows-update"
     }
   }
 }
@@ -57,6 +65,14 @@ build {
     restart_timeout = "15m"
   }
 
+  provisioner "windows-updates" {
+    pause_before = "30s"
+  }
+
+  provisioner "windows-restart" {
+    restart_timeout = "15m"
+  }
+
   post-processors {
     post-processor "artifice" {
       files = [
@@ -65,7 +81,7 @@ build {
       ]
     }
     post-processor "vagrant" {
-      output              = format("%s_virtualbox_amd64.box", var.vm_name)
+      output              = format("%s-virtualbox-amd64.box", var.vm_name)
       keep_input_artifact = false
       provider_override   = "virtualbox"
     }
