@@ -16,7 +16,7 @@ version/%.pkrvars.hcl:
 
 .PHONY: packer-validate
 packer-validate:
-	$(PACKER) validate -var-file=version/$(VERSION).pkrvars.hcl .
+	$(PACKER) validate -var-file=version/$(VERSION).pkrvars.hcl -var "vagrant_token=$(TOKEN)" -var "release=$(RELEASE)" .
 
 .PHONY: packer-fmt
 packer-fmt:
@@ -28,7 +28,7 @@ packer-init:
 
 .PHONY: packer-build
 packer-build:
-	$(PACKER) build -var-file=version/$(VERSION).pkrvars.hcl .
+	$(PACKER) build -force -var-file=version/$(VERSION).pkrvars.hcl -var "vagrant_token=$(TOKEN)" -var "release=$(RELEASE)" .
 
 .PHONY: docs
 docs:

@@ -22,3 +22,16 @@ variable "version" {
   description = "Define the build version. E.g '2022-sc'."
   type        = string
 }
+variable "release" {
+  description = "Define the semver release. E.g. '0.1.0'."
+  type        = string
+}
+variable "vagrant_token" {
+  description = "Define the Vagrant Cloud access token."
+  type        = string
+  sensitive   = true
+}
+variable "vagrant_box_tag" {
+  description = "Define the Vagrant box tag. E.g. 'win2022'."
+  type        = string
+}

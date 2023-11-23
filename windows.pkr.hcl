@@ -20,6 +20,10 @@ locals {
   disk_size_gb = 40
   memory_gb    = 2
   cpus         = 2
+
+  // Output
+  output_dir = format("%s/output-windows", abspath(path.root))
+  box_output = format("%s/%s.box", local.output_dir, var.vm_name)
 }
 
 // Virtualbox
@@ -65,7 +69,7 @@ build {
     restart_timeout = "15m"
   }
 
-  provisioner "windows-updates" {
+  provisioner "windows-update" {
     pause_before = "30s"
   }
 
@@ -76,14 +80,22 @@ build {
   post-processors {
     post-processor "artifice" {
       files = [
-        format("output-windows/%s-disk001.vmdk", var.vm_name),
-        format("output-windows/%s.ovf", var.vm_name)
+        format("%s/%s-disk001.vmdk", local.output_dir, var.vm_name),
+        format("%s/%s.ovf", local.output_dir, var.vm_name)
       ]
     }
+
     post-processor "vagrant" {
-      output              = format("%s-virtualbox-amd64.box", var.vm_name)
+      output              = local.box_output
       keep_input_artifact = false
       provider_override   = "virtualbox"
+    }
+
+    post-processor "vagrant-cloud" {
+      access_token = var.vagrant_token
+      box_tag      = format("d-strobel/%s", var.vagrant_box_tag)
+      architecture = "amd64"
+      version      = var.release
     }
   }
 }
