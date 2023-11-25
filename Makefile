@@ -8,7 +8,7 @@ SHELL = bash
 
 # Ensure prerequesites
 packer-validate packer-build: \
-	version/$(VERSION).pkrvars.hcl
+	tags/2022-sc.pkrvars.hcl
 
 # Check if var-file exists
 version/%.pkrvars.hcl:
@@ -16,7 +16,8 @@ version/%.pkrvars.hcl:
 
 .PHONY: packer-validate
 packer-validate:
-	$(PACKER) validate -var-file=version/$(VERSION).pkrvars.hcl -var "vagrant_token=$(TOKEN)" -var "release=$(RELEASE)" .
+	$(PACKER) validate -var-file=tags/2022-sc.pkrvars.hcl .
+	$(PACKER) validate -var-file=tags/2022-sc-ad.pkrvars.hcl .
 
 .PHONY: packer-fmt
 packer-fmt:
@@ -28,7 +29,8 @@ packer-init:
 
 .PHONY: packer-build
 packer-build:
-	$(PACKER) build -force -var-file=version/$(VERSION).pkrvars.hcl -var "vagrant_token=$(TOKEN)" -var "release=$(RELEASE)" .
+	$(PACKER) build -force -var-file=tags/2022-sc.pkrvars.hcl -parallel-builds=1 .
+	$(PACKER) build -force -var-file=tags/2022-sc-ad.pkrvars.hcl -parallel-builds=1 .
 
 .PHONY: docs
 docs:

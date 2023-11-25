@@ -4,6 +4,10 @@
 
 packer {
   required_plugins {
+    virtualbox = {
+      version = "1.0.5"
+      source  = "github.com/hashicorp/virtualbox"
+    }
     vagrant = {
       version = "1.1.0"
       source  = "github.com/hashicorp/vagrant"
@@ -11,6 +15,10 @@ packer {
     windows-update = {
       version = "0.14.0"
       source  = "github.com/rgl/windows-update"
+    }
+    ansible = {
+      version = "1.1.0"
+      source  = "github.com/hashicorp/ansible"
     }
   }
 }
@@ -21,8 +29,11 @@ locals {
   memory_gb    = 2
   cpus         = 2
 
-  // Output
-  output_dir = format("%s/output-windows", abspath(path.root))
+  // Get version number from version.txt
+  version = file("version.txt")
+
+  // Outputs
+  output_dir = "output-windows"
   box_output = format("%s/%s.box", local.output_dir, var.vm_name)
 }
 
@@ -38,9 +49,9 @@ source "virtualbox-iso" "windows" {
   guest_additions_mode = "disable"
 
   floppy_files = [
-    format("%s/files/%s/Autounattend.xml", abspath(path.root), var.version),
-    format("%s/scripts/ConfigureRemotingForAnsible.ps1", abspath(path.root)),
-    format("%s/scripts/InstallVirtualboxGuestAdditions.ps1", abspath(path.root))
+    format("files/%s/Autounattend.xml", var.build),
+    "scripts/ConfigureRemotingForAnsible.ps1",
+    "scripts/InstallVirtualboxGuestAdditions.ps1"
   ]
 
   vboxmanage = [
@@ -69,6 +80,14 @@ build {
     restart_timeout = "15m"
   }
 
+  provisioner "powershell" {
+    scripts = ["scripts/SetupActiveDirectory.yml"]
+  }
+
+  provisioner "windows-restart" {
+    restart_timeout = "15m"
+  }
+
   provisioner "windows-update" {
     pause_before = "30s"
   }
@@ -86,16 +105,18 @@ build {
     }
 
     post-processor "vagrant" {
-      output              = local.box_output
-      keep_input_artifact = false
-      provider_override   = "virtualbox"
+      output               = local.box_output
+      keep_input_artifact  = false
+      provider_override    = "virtualbox"
+      vagrantfile_template = format("files/%s/Vagrantfile.template", var.build)
     }
 
     post-processor "vagrant-cloud" {
-      access_token = var.vagrant_token
-      box_tag      = format("d-strobel/%s", var.vagrant_box_tag)
-      architecture = "amd64"
-      version      = var.release
+      box_tag             = format("d-strobel/%s", var.vagrant_box_tag)
+      architecture        = "amd64"
+      version             = local.version
+      version_description = format("Changelog: https://github.com/d-strobel/vagrant-box-windows/releases/tag/v%s", local.version)
+      keep_input_artifact = true
     }
   }
 }

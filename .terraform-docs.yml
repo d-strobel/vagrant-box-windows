@@ -5,19 +5,28 @@ content: |-
   Build and deploy Windows Vagrant boxes with Hashicorp Packer.
 
   ## Version
-  | Windows Server         | Version |
+  | Windows Server         | Tag |
   | ---------------------- | ----- |
   | Windows Server 2022 Standard Core | 2022-sc |
+  | Windows Server 2022 Standard Core + Active-Directory | 2022-sc-ad |
 
-  ## Usage (example)
+  ## Prerequisites
+  To upload to Vagrant Cloud, define the environment variable 'VAGRANT_CLOUD_TOKEN'.
+
+  ## Usage
+  To deploy all tags run the following commands:
 
   ```bash
   make packer-init
-  make packer-validate VERSION=2022-sc
-  make packer-build VERSION=2022-sc
+  make packer-validate
+  make packer-build
   ```
 
   {{ .Inputs }}
+
+  ## Release
+  To release a new version use the release-please bot.
+  Afterwards pull the main branch and run the packer build (see 'Usage').
 
   ## Inspirations
     - https://github.com/ruzickap/packer-templates
