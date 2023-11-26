@@ -73,7 +73,10 @@ build {
   sources = ["source.virtualbox-iso.windows"]
 
   provisioner "powershell" {
-    scripts = ["scripts/Setup.ps1"]
+    scripts = [
+      "scripts/SetupSystem.ps1",
+      "scripts/SetupUser.ps1"
+    ]
   }
 
   provisioner "windows-restart" {
@@ -111,12 +114,13 @@ build {
       vagrantfile_template = format("files/%s/Vagrantfile.template", var.build)
     }
 
-    post-processor "vagrant-cloud" {
-      box_tag             = format("d-strobel/%s", var.vagrant_box_tag)
-      architecture        = "amd64"
-      version             = local.version
-      version_description = format("Changelog: https://github.com/d-strobel/vagrant-box-windows/releases/tag/v%s", local.version)
-      keep_input_artifact = true
-    }
+    # TODO: When boxes are reade, push the first release to the vagrant cloud with version 0.1.0
+    # post-processor "vagrant-cloud" {
+    #   box_tag             = format("d-strobel/%s", var.vagrant_box_tag)
+    #   architecture        = "amd64"
+    #   version             = local.version
+    #   version_description = format("Changelog: https://github.com/d-strobel/vagrant-box-windows/releases/tag/v%s", local.version)
+    #   keep_input_artifact = true
+    # }
   }
 }
