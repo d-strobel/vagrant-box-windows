@@ -1,7 +1,0 @@
----
-- name: Setup Active-Directory
-  hosts: default
-  become: true
-  tasks:
-    - name: Install dns domain
-      microsoft
