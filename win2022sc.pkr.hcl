@@ -73,7 +73,7 @@ build {
 
     post-processor "checksum" {
       checksum_types = ["sha256"]
-      output         = format("output-%s/%s.box.SHA256", build.name, build.name)
+      output         = format("files/%s/%s.box.SHA256", build.name, build.name)
     }
 
     post-processor "vagrant-cloud" {
@@ -82,13 +82,7 @@ build {
       version             = local.version
       version_description = format("Changelog: https://github.com/d-strobel/vagrant-box-windows/releases/tag/v%s", local.version)
       keep_input_artifact = false
-      box_checksum        = format("sha256:%s", element(split(" ", file(format("output-%s/%s.box.SHA256", build.name, build.name)))), 0)
-    }
-
-    post-processor "shell-local" {
-      inline = [
-        format("rm output-%s/%s.box.SHA256", build.name, build.name)
-      ]
+      box_checksum        = format("sha256:%s", element(split(" ", file(format("files/%s/%s.box.SHA256", build.name, build.name))),0 ))
     }
   }
 }
