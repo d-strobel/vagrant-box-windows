@@ -27,3 +27,5 @@ jobs:
       - name: Run `packer validate`
         id: validate
         run: "packer validate ."
+        env:
+          VAGRANT_CLOUD_TOKEN: ${{ secrets.VAGRANT_CLOUD_TOKEN }}
