@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.1](https://github.com/d-strobel/vagrant-box-windows/compare/v1.0.0...v1.0.1) (2023-11-30)
+
+
+### Bug Fixes
+
+* checksum file changes ([ff92b5b](https://github.com/d-strobel/vagrant-box-windows/commit/ff92b5bc090f8e257df8c555d583af2260ed637c))
+* vagrant cloud upload ([47e1544](https://github.com/d-strobel/vagrant-box-windows/commit/47e1544b4c4777fb629ec8cd4b9f929cc2ec07fd))
+
 ## 1.0.0 (2023-11-30)
 
 
