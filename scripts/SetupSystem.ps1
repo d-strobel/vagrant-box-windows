@@ -67,18 +67,6 @@ powercfg /change standby-timeout-dc 0
 powercfg /change hibernate-timeout-ac 0
 powercfg /change hibernate-timeout-dc 0
 
-# Disable password expiration for Administrator
+# Disable password expiration for Administrator and vagrant user
 Set-LocalUser Administrator -PasswordNeverExpires $true
-
-# Configure PowerShell prompt
-$psprofile = @'
-Set-Location /
-
-function prompt {
-    Write-Host "[$(Get-Date -f 'HH:mm:ss')]" -ForegroundColor Yellow -NoNewline
-    " PS $($executionContext.SessionState.Path.CurrentLocation)$('>' * ($nestedPromptLevel + 1)) "
-}
-'@
-
-New-Item $PROFILE -ItemType File -Force | Out-Null
-Set-Content -Path $PROFILE -Value $psprofile
+Set-LocalUser vagrant -PasswordNeverExpires $true
