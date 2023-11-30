@@ -10,15 +10,15 @@ Vagrant.configure("2") do |config|
   # Port forward DNS
   config.vm.network :forwarded_port, guest: 53, host: 5553, id: "dns", auto_correct: true
   # Port forward RPC Endpoint Mapper
-  config.vm.network :forwarded_port, guest: 135, host: 11135, id: "rpc", auto_correct: true
+  config.vm.network :forwarded_port, guest: 135, host: 135, id: "rpc", auto_correct: true
   # Port forward Kerberos
-  config.vm.network :forwarded_port, guest: 88, host: 8888, id: "kerberos", auto_correct: true
-  config.vm.network :forwarded_port, guest: 464, host: 4464, id: "kerberos-pwd", auto_correct: true
+  config.vm.network :forwarded_port, guest: 88, host: 88, id: "kerberos", auto_correct: true
+  config.vm.network :forwarded_port, guest: 464, host: 464, id: "kerberos-pwd", auto_correct: true
   # Port forward LDAP
-  config.vm.network :forwarded_port, guest: 389, host: 11389, id: "ldap", auto_correct: true
-  config.vm.network :forwarded_port, guest: 636, host: 11636, id: "ldap-ssl", auto_correct: true
-  config.vm.network :forwarded_port, guest: 3268, host: 13268, id: "ldap-gc", auto_correct: true
-  config.vm.network :forwarded_port, guest: 3269, host: 13269, id: "ldap-gc-ssl", auto_correct: true
+  config.vm.network :forwarded_port, guest: 389, host: 389, id: "ldap", auto_correct: true
+  config.vm.network :forwarded_port, guest: 636, host: 636, id: "ldap-ssl", auto_correct: true
+  config.vm.network :forwarded_port, guest: 3268, host: 3268, id: "ldap-gc", auto_correct: true
+  config.vm.network :forwarded_port, guest: 3269, host: 3269, id: "ldap-gc-ssl", auto_correct: true
 
   config.vm.boot_timeout      = 1000
   config.vm.communicator      = "winrm"
