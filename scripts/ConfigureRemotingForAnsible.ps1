@@ -40,6 +40,7 @@
 # Updated by Jordan Borean <jborean93@gmail.com>
 # Updated by Erwan Quélin <erwan.quelin@gmail.com>
 # Updated by David Norman <david@dkn.email>
+# Updated by Dustin Strobel <d-strobel>
 #
 # Version 1.0 - 2014-07-06
 # Version 1.1 - 2014-11-11
@@ -52,6 +53,10 @@
 # Version 1.8 - 2018-02-23
 # Version 1.9 - 2018-09-21
 
+# Changed version - 2023-11-30
+# Added support for unencrypted transport (HTTP).
+# This is just needed for a testing environment.
+
 # Support -Verbose option
 [CmdletBinding()]
 
@@ -63,6 +68,7 @@ Param (
     [switch]$ForceNewSSLCert,
     [switch]$GlobalHttpFirewallAccess,
     [switch]$DisableBasicAuth = $false,
+    $AllowUnencrypted = $true,
     [switch]$EnableCredSSP
 )
 
@@ -387,6 +393,19 @@ Else
     Else
     {
         Write-Verbose "Basic auth is already enabled."
+    }
+}
+
+# If AllowUnencrypted is set to true
+If ($AllowUnencrypted)
+{
+    # Check for unencrypted
+    $allowUnencryptedSetting = Get-ChildItem WSMan:\localhost\Service | Where-Object {$_.Name -eq "AllowUnencrypted"}
+    If (($allowUnencryptedSetting.Value) -eq $false)
+    {
+        Write-Verbose "Enabling unencrypted transport support."
+        Set-Item -Path "WSMan:\localhost\Service\AllowUnencrypted" -Value $true
+        Write-Log "Enabled unencrypted transport support."
     }
 }
 
