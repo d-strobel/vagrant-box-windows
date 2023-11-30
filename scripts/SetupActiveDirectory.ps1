@@ -1,6 +1,6 @@
 # Variables
-$dns_domain_name = "dstrobel.local"
-$safe_mode_password = "secretpassword123"
+$dns_domain_name = "vagrant.local"
+$safe_mode_password = "SecretPassWord123!#()"
 
 # Process
 $requiredFeatures = @("AD-Domain-Services", "RSAT-ADDS")
