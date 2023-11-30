@@ -1,0 +1,35 @@
+name: packer
+
+on:
+  push:
+
+env:
+  PRODUCT_VERSION: "latest"
+
+jobs:
+  packer:
+    runs-on: ubuntu-latest
+    name: Run Packer
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Packer
+        uses: hashicorp/setup-packer@main
+        id: setup
+        with:
+          version: ${{ env.PRODUCT_VERSION }}
+
+      - name: Check Packer formatting
+        id: fmt
+        run: "packer fmt -check -recursive ."
+
+      - name: Packer init
+        id: init
+        run: "packer init ."
+
+      - name: Packer validate
+        id: validate
+        run: "packer validate ."
+        env:
+          VAGRANT_CLOUD_TOKEN: ${{ secrets.VAGRANT_CLOUD_TOKEN }}
