@@ -66,7 +66,7 @@
                 </ProductKey>
                 <AcceptEula>true</AcceptEula>
                 <FullName>Administrator</FullName>
-                <Organization>d-strobel</Organization>
+                <Organization>vagrant</Organization>
             </UserData>
         </component>
     </settings>
@@ -80,7 +80,7 @@
             <OEMInformation>
                 <HelpCustomized>false</HelpCustomized>
             </OEMInformation>
-            <ComputerName/>
+            <ComputerName>win2022sc</ComputerName>
             <TimeZone>UTC</TimeZone>
             <RegisteredOwner/>
         </component>
@@ -114,6 +114,17 @@
                     <Value>vagrant</Value>
                     <PlainText>true</PlainText>
                 </AdministratorPassword>
+                <LocalAccounts>
+                    <LocalAccount wcm:action="add">
+                        <Name>vagrant</Name>
+                        <DisplayName>Vagrant</DisplayName>
+                        <Group>Administrators</Group>
+                        <Password>
+                            <Value>vagrant</Value>
+                            <PlainText>true</PlainText>
+                        </Password>
+                    </LocalAccount>
+                </LocalAccounts>
             </UserAccounts>
             <RegisteredOwner/>
             <AutoLogon>
@@ -122,8 +133,8 @@
                     <PlainText>true</PlainText>
                 </Password>
                 <Enabled>true</Enabled>
-                <Username>Administrator</Username>
-                <LogonCount>2</LogonCount>
+                <LogonCount>1</LogonCount>
+                <Username>vagrant</Username>
             </AutoLogon>
             <FirstLogonCommands>
                 <SynchronousCommand wcm:action="add">
@@ -132,9 +143,14 @@
                     <Order>1</Order>
                 </SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
+                    <CommandLine>%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe -File a:\SetupOpenSSH.ps1</CommandLine>
+                    <Description>Setup OpenSSH</Description>
+                    <Order>2</Order>
+                </SynchronousCommand>
+                <SynchronousCommand wcm:action="add">
                     <CommandLine>%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe -File a:\ConfigureRemotingForAnsible.ps1</CommandLine>
                     <Description>Configure WinRM Remoting</Description>
-                    <Order>2</Order>
+                    <Order>3</Order>
                 </SynchronousCommand>
             </FirstLogonCommands>
         </component>

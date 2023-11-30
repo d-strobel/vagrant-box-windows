@@ -1,0 +1,38 @@
+Vagrant.configure("2") do |config|
+
+  # Port forward for RDP
+  config.vm.network :forwarded_port, guest: 3389, host: 23389, id: "rdp", auto_correct:true
+  # Port forward for WinRM
+  config.vm.network :forwarded_port, guest: 5986, host: 25986, id: "winrm-ssl", auto_correct:true
+  config.vm.network :forwarded_port, guest: 5985, host: 25985, id: "winrm", auto_correct:true
+  # Port forward for SSH
+  config.vm.network :forwarded_port, guest: 22, host: 2222, id: "ssh", auto_correct: true
+  # Port forward DNS
+  config.vm.network :forwarded_port, guest: 53, host: 5553, id: "dns", auto_correct: true
+  # Port forward RPC Endpoint Mapper
+  config.vm.network :forwarded_port, guest: 135, host: 11135, id: "rpc", auto_correct: true
+  # Port forward Kerberos
+  config.vm.network :forwarded_port, guest: 88, host: 8888, id: "kerberos", auto_correct: true
+  config.vm.network :forwarded_port, guest: 464, host: 4464, id: "kerberos-pwd", auto_correct: true
+  # Port forward LDAP
+  config.vm.network :forwarded_port, guest: 389, host: 11389, id: "ldap", auto_correct: true
+  config.vm.network :forwarded_port, guest: 636, host: 11636, id: "ldap-ssl", auto_correct: true
+  config.vm.network :forwarded_port, guest: 3268, host: 13268, id: "ldap-gc", auto_correct: true
+  config.vm.network :forwarded_port, guest: 3269, host: 13269, id: "ldap-gc-ssl", auto_correct: true
+
+  config.vm.boot_timeout      = 1000
+  config.vm.communicator      = "winrm"
+  config.windows.halt_timeout = 15
+  config.winrm.password       = "vagrant"
+  config.winrm.retry_limit    = 30
+  config.winrm.username       = "vagrant"
+
+  # Disable NFS sharing (==> default: Mounting NFS shared folders...)
+  config.vm.synced_folder ".", "/vagrant", type: "nfs", disabled: true
+
+  if Vagrant.has_plugin?("vagrant-winrm-syncedfolders")
+    config.vm.synced_folder ".", "/vagrant", type: "winrm"
+  else
+    config.vm.synced_folder ".", "/vagrant", disabled: true
+  end
+end
